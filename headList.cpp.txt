@@ -1,0 +1,163 @@
+#include<iostream>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node* link;
+    public:
+    Node(int data){
+        this->data=data;
+        this->link=NULL;
+    }
+    
+};
+int menu(){
+        cout<<"--------------menu------------------"<<endl;
+        cout<<"1.Create List "<<endl;
+        cout<<"2.Delete Element By Value "<<endl;
+        cout<<"3.Insert Element After value "<<endl;
+        cout<<"4.Insert Element Before Value "<<endl;
+        cout<<"5.Insert Element By position "<<endl;
+        cout<<"6.Reverse List "<<endl;
+        cout<<"7.Display List "<<endl;
+        cout<<"8.Exit Code "<<endl;
+        cout<<"----------------------------------------------"<<endl;
+        int ch;
+        cout<<"Enter Your choice :";cin>>ch;
+        return ch;
+}
+
+void InsertAfter(Node* &head,int data){
+    Node *temp=new Node(data);
+    Node *p=head;
+    while(p->link!=NULL){
+        p=p->link;
+    }
+    p->link=temp;
+}
+void CreateList(Node * &head){
+    int n,data;
+    cout<<"Enter the Number of Nodes ";cin>>n;
+    for(int i=1;i<=n;i++){
+        cout<<"Enter "<<i<<" th Node ";
+        cin>>data;
+        InsertAfter(head,data);
+    }
+    cout<<"All Nodes Are Inserted "<<endl;
+}
+
+void InsertAfterNode(Node* &head,int data,int item){
+    Node *temp=new Node(data);
+    Node *p=head->link;
+    while(p!=NULL){
+        if(p->data==item){
+            temp->link=p->link;
+            p->link=temp;
+            return;
+        }
+        p=p->link;
+    }
+    cout<<item<<" Not Present in the List "<<endl;
+}
+void InsertBeforeNode(Node* &head,int data,int item){
+    Node* temp=new Node(data);
+    Node *p=head;
+    while(p->link!=NULL){
+        if(p->link->data==item){
+            temp->link=p->link;
+            p->link=temp;
+            return;
+        }
+        p=p->link;
+    }
+    cout<<item<<" Not Present In the List "<<endl;
+}
+void InsertAtPos(Node * &head,int data,int item){
+    Node *temp=new Node(data);
+    Node *p=head;
+    for(int i=1;i<item;i++){
+        p=p->link;
+        if(p==NULL){
+            cout<<"List Have Less then "<<item<<" elements "<<endl;
+            return;
+        }
+    }
+    temp->link=p->link;
+    p->link=temp;
+    cout<<data<<" Inserted "<<endl;
+}
+void ReverseList(Node * &head){
+    Node *prev,*curr,*next;
+    prev=NULL;
+    curr=head->link;
+    while(curr!=NULL){
+        next=curr->link;
+        curr->link=prev;
+        prev=curr;
+        curr=next;
+    }
+    head->link=prev;
+    cout<<"Reversed "<<endl;
+}
+void Delete(Node* &head,int data){
+    Node *p=head;
+    Node *temp;
+    while(p->link!=NULL){
+        if(p->link->data==data){
+            temp=p->link;
+            p->link=temp->link;
+            cout<<temp->data<<" deleted "<<endl;
+            delete temp;
+            return;
+        }
+        p=p->link;
+    }
+    cout<<data<<" Not Present In the list "<<endl;
+}
+void display(Node* &head){
+    Node *p=head->link;
+    if(head->link==NULL){
+        cout<<"List is empty "<<endl;
+        return;
+    }
+    while(p!=NULL){
+        cout<<p->data<<" ";
+        p=p->link;
+    }cout<<endl;
+}
+void Caller(){
+    Node *head=new Node(0);
+    while(true){
+        int ch=menu();
+        int data,item;
+        switch(ch){
+            case 1:CreateList(head);
+                break;
+            case 2:cout<<"Enter data to delete ";cin>>data;
+                    Delete(head,data);
+                    break;
+            case 3:cout<<"Insert data After ";cin>>item;cout<<endl;
+                cout<<"Enter data to insert ";cin>>data;
+                InsertAfterNode(head,data,item);
+                break;
+             case 4:cout<<"Insert data Before ";cin>>item;cout<<endl;
+                cout<<"Enter data to insert ";cin>>data;
+                InsertBeforeNode(head,data,item);
+                break;
+            case 5:cout<<"Insert Position at Which data is to be inserted : ";cin>>item;cout<<endl;
+                cout<<"Enter data to insert ";cin>>data;
+                InsertAtPos(head,data,item);
+                break;
+            case 6:ReverseList(head);
+                break;
+            case 7:display(head);
+                break;
+            case 8:exit(0);
+            
+        }
+    }
+}
+int main(void){
+    Caller();
+    return 0;
+}
